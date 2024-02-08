@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SoraDataEngine", "SoraDataEngine\SoraDataEngine.csproj", "{12126883-5999-4821-9A6D-62D3412C3248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SoraDataEngine", "SoraDataEngine\SoraDataEngine.csproj", "{12126883-5999-4821-9A6D-62D3412C3248}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{C0F43B83-1933-4CE9-97AB-4851DA7B6474}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{12126883-5999-4821-9A6D-62D3412C3248}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{12126883-5999-4821-9A6D-62D3412C3248}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{12126883-5999-4821-9A6D-62D3412C3248}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0F43B83-1933-4CE9-97AB-4851DA7B6474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0F43B83-1933-4CE9-97AB-4851DA7B6474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0F43B83-1933-4CE9-97AB-4851DA7B6474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0F43B83-1933-4CE9-97AB-4851DA7B6474}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Scripting\" />
+    <Folder Include="Runtime\Timeline\" />
+    <Folder Include="Dev\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Composition" Version="8.0.0" />
+  </ItemGroup>
+
 </Project>
