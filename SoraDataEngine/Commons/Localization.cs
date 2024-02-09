@@ -17,6 +17,7 @@ namespace SoraDataEngine.Commons
 
         public static void Init(string designatedLanguage)
         {
+            throw new NotImplementedException();
             // init the localization strings.
         }
 

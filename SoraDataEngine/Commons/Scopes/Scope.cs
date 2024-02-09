@@ -84,7 +84,14 @@ namespace SoraDataEngine.Commons.Scopes
 
         public void AddAttribute(string name, IAttribute value)
         {
-            Attributes.Add(name, value);
+            if (Attributes.ContainsKey(name))
+            {
+                Attributes[name] = value;
+            }
+            else
+            {
+                Attributes.Add(name, value);
+            }
         }
 
         public void AddChild(IScope child)
@@ -143,9 +150,19 @@ namespace SoraDataEngine.Commons.Scopes
             return Children.FirstOrDefault((ss) => ss.Name == name);
         }
 
+        public IScope? GetChildByFullName(string fullName)
+        {
+            return Children.FirstOrDefault(ss => ss.FullName == fullName);
+        }
+
         public IScope? GetChildByID(string id)
         {
             return Children.FirstOrDefault((ss) => ss.ID == id);
+        }
+
+        public IScope? GetChildByName(string name)
+        {
+            return Children.FirstOrDefault(ss => ss.Name == name);
         }
 
         public List<IScope> GetChildren()
@@ -222,6 +239,17 @@ namespace SoraDataEngine.Commons.Scopes
             foreach (IScope c in Children)
             {
                 if (c.ID == child.ID)
+                {
+                    Children.Remove(c);
+                }
+            }
+        }
+
+        public void RemoveChildByFullName(string fullName)
+        {
+            foreach(IScope c in Children)
+            {
+                if (c.FullName == fullName)
                 {
                     Children.Remove(c);
                 }
