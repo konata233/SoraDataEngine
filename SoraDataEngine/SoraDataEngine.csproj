@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Scripting\" />
-    <Folder Include="Runtime\Timeline\" />
     <Folder Include="Dev\" />
   </ItemGroup>
 

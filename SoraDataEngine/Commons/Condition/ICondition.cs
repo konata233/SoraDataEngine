@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Commons.Condition
 {
+    /// <summary>
+    /// 基础条件接口
+    /// </summary>
     public interface ICondition
     {
         /// <summary>

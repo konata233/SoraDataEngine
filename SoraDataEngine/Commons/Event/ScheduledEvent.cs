@@ -8,33 +8,41 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Commons.Event
 {
-    public class Event : IEvent
+    public class ScheduledEvent : IEvent
     {
-        public ICondition Condition {  get; set; }
+        public ulong ScheduledTime { get; set; }
+        public ICondition Condition { get; set; }
         public IEnumerable<IEffect> Effects { get; set; }
-        public string EventID { get; private set; }
 
-        public Event(ICondition condition, IEnumerable<IEffect> effects) 
+        public string EventID {  get; set; }
+
+        public ScheduledEvent(ICondition condition, IEnumerable<IEffect> effects, ulong scheduledTime)
         {
-            Condition = condition;
-            Effects = effects;
             EventID = Guid.NewGuid().ToString();
+            Effects = effects;
+            ScheduledTime = scheduledTime;
+            Condition = condition;
         }
 
         public bool Check(params object[] objects)
         {
-            if (Condition.IsSatisfied())
+            if (objects == null || objects.Length == 0) return false;
+            if (objects[0].GetType() == typeof(ulong))
             {
-                Raise(objects);
-                return true;
+                if ((ulong)objects[0] >= ScheduledTime && Condition.IsSatisfied())
+                {
+                    Raise(objects);
+                    return true;
+                }
+                else return false;
             }
-            else { return false; }
+            else return false;
         }
 
         public void Raise(params object[] objects)
         {
-            foreach (var effect in Effects) 
-            { 
+            foreach (var effect in Effects)
+            {
                 if (effect is not null)
                 {
                     foreach (var action in effect.Actions)

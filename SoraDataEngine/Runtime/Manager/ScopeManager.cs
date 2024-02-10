@@ -10,6 +10,9 @@ using Scope = SoraDataEngine.Commons.Scopes.Scope;
 
 namespace SoraDataEngine.Runtime.Manager
 {
+    /// <summary>
+    /// Scope 管理器
+    /// </summary>
     public sealed class ScopeManager
     {
         private Dictionary<string, IScope> _scopes;
@@ -203,7 +206,7 @@ namespace SoraDataEngine.Runtime.Manager
         /// 添加 Scope
         /// </summary>
         /// <param name="scope">要添加的 Scope</param>
-        public void AddScope(IScope scope)
+        public void RegistScope(IScope scope)
         {
             if (_scopes.ContainsKey(scope.ID))
             {
@@ -219,7 +222,7 @@ namespace SoraDataEngine.Runtime.Manager
         /// </summary>
         /// <param name="name">名称</param>
         /// <param name="parent">父 Scope</param>
-        public void AddScope(string name, IScope parent)
+        public void RegistScope(string name, IScope parent)
         {
             string id = Guid.NewGuid().ToString();
             IScope scope = ScopeFactory.MakeScope(name, parent, _rootScope, this);

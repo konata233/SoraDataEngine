@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Commons.Attributes
 {
+    /// <summary>
+    /// 属性接口
+    /// </summary>
     public interface IAttribute
     {
         string Name { get; }

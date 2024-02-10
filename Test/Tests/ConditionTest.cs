@@ -14,11 +14,11 @@ namespace Tests
         {
             Condition c1 = new Condition
             {
-                IsSatisfied = new Func<bool>(() => false),
+                IsSatisfied = new Func<bool>(() => RandBool()),
             };
             Condition c2 = new Condition
             {
-                IsSatisfied = new Func<bool>(() => false),
+                IsSatisfied = new Func<bool>(() => RandBool()),
             };
 
             AggregateCondition condition = new AggregateCondition
@@ -30,15 +30,22 @@ namespace Tests
                 }
             }.Build();
             
-            Console.WriteLine(c1.IsSatisfied().ToString() + c2.IsSatisfied().ToString());
+            //Console.WriteLine(c1.IsSatisfied().ToString() + c2.IsSatisfied().ToString());
 
-            Console.WriteLine(condition.IsSatisfied());
+            //Console.WriteLine(condition.IsSatisfied());
 
             condition.ConditionType = AggregateConditionType.None;
-            Console.WriteLine(condition.Build().IsSatisfied());
+           // Console.WriteLine(condition.Build().IsSatisfied());
 
             condition.ConditionType = AggregateConditionType.All;
-            Console.WriteLine(condition.Build().IsSatisfied());
+            //Console.WriteLine(condition.Build().IsSatisfied());
+        }
+
+        private static bool RandBool()
+        {
+            bool[] arr = { true, false };
+            Random ran = new Random();
+            return arr[ran.Next(2)];
         }
     }
 }

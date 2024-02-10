@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Commons
 {
+    /// <summary>
+    /// 类库本地化
+    /// </summary>
     internal class Localization
     {
         private static Dictionary<string, string>? LocalizedString { get; set; }

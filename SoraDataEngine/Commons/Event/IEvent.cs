@@ -1,4 +1,5 @@
 ﻿using SoraDataEngine.Commons.Condition;
+using SoraDataEngine.Commons.Effects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,10 @@ namespace SoraDataEngine.Commons.Event
     public interface IEvent
     {
         ICondition Condition { get; set; }
-        IEnumerable<Action> Effects { get; set; }
+        IEnumerable<IEffect> Effects { get; set; }
+        string EventID { get; }
 
-        bool Check();
-        void Raise();
+        bool Check(params object[] objects);
+        void Raise(params object[] objects);
     }
 }

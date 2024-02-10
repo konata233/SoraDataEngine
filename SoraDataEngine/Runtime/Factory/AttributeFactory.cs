@@ -8,6 +8,9 @@ using Attribute = SoraDataEngine.Commons.Attributes.Attribute;
 
 namespace SoraDataEngine.Runtime.Factory
 {
+    /// <summary>
+    /// 属性工厂
+    /// </summary>
     public class AttributeFactory
     {
         public AttributeFactory() 

@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Commons
 {
+    /// <summary>
+    /// 序列化工具
+    /// </summary>
     public class Serializer
     {
         public static byte[] SerializeObject(object obj)

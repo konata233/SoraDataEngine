@@ -8,6 +8,9 @@ using SoraDataEngine.Runtime.Manager;
 
 namespace SoraDataEngine.Runtime.Factory
 {
+    /// <summary>
+    ///  Scope 工厂
+    /// </summary>
     public sealed class ScopeFactory
     {
         public ScopeFactory()
