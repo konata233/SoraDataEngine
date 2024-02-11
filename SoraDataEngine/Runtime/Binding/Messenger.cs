@@ -53,7 +53,6 @@ namespace SoraDataEngine.Runtime.Binding
                 ListenerReceived -= Listeners[listener.ID].Callback;
                 Listeners[listener.ID] = listener;
                 ListenerReceived += listener.Callback;
-
             }
             return listener.ID;
         }

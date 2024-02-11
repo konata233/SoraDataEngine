@@ -81,15 +81,15 @@ namespace SoraDataEngine.Commons.Scopes
 
         public ScopeManager Manager { get; set; }
 
-        public void AddAttribute(string name, IAttribute value)
+        public void AddAttribute(string name, IAttribute attribute)
         {
             if (Attributes.ContainsKey(name))
             {
-                Attributes[name] = value;
+                Attributes[name].Value = attribute.Value;
             }
             else
             {
-                Attributes.Add(name, value);
+                Attributes.Add(name, attribute);
             }
         }
 

@@ -11,22 +11,37 @@ namespace SoraDataEngine.Commons.Attributes
     /// </summary>
     public class Attribute : IAttribute
     {
-        public string Name { get; }
-        public AttributeType AttrType { get; } = AttributeType.None;
+        public string Name { get; private set; }
+        public AttributeType AttrType { get; set; } = AttributeType.None;
 
-        public object? Value { get; set; }
+        private object? _value;
+
+        public object? Value
+        {
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                OnValueChanged?.Invoke(value, Value);
+                _value = value;
+            }
+        }
+
+        public event Action<object?, object?>? OnValueChanged;
 
         public Attribute(string name, object value, AttributeType type)
         {
             Name = name;
-            Value = value;
+            _value = value;
             AttrType = type;
         }
 
         public Attribute(string name, object value)
         {
             Name = name;
-            Value = value;
+            _value = value;
             AttrType = AttributeType.None;
         }
 

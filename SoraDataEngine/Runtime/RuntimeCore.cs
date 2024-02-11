@@ -16,6 +16,7 @@ namespace SoraDataEngine.Runtime
         public static EventManager? EventManager { get; private set; }
         public static Scheduler? Scheduler { get; private set; }
         public static Messenger? Messenger { get; private set; }
+        public static AttributeBinder? AttributeBinder { get; private set; }
 
         public static bool IsCoreStarted { get; private set; } = false;
         
@@ -28,6 +29,8 @@ namespace SoraDataEngine.Runtime
             Scheduler = new Scheduler();
 
             Messenger = new Messenger();
+
+            AttributeBinder = new AttributeBinder();
 
             IsCoreStarted = false;
             Instance = this;
