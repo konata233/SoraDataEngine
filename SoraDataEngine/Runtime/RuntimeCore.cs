@@ -44,6 +44,9 @@ namespace SoraDataEngine.Runtime
             Scheduler = new Scheduler(clock);
         }
 
+        /// <summary>
+        /// 启动运行时
+        /// </summary>
         public void Start()
         {
             AsmLoader?.StartAllEntries();
@@ -51,22 +54,34 @@ namespace SoraDataEngine.Runtime
             IsCoreStarted = true;
         }
 
+        /// <summary>
+        /// 暂停运行时
+        /// </summary>
         public void Pause()
         {
             Scheduler?.Pause();
         }
 
+        /// <summary>
+        /// 从暂停状态恢复运行时
+        /// </summary>
         public void Restart()
         {
             Scheduler?.Restart();
         }
 
+        /// <summary>
+        /// 终止运行时
+        /// </summary>
         public void Stop()
         {
             Scheduler?.Stop();
             AsmLoader?.StopAllEntries();
         }
 
+        /// <summary>
+        /// 销毁运行时
+        /// </summary>
         public void Dispose()
         {
             Scheduler?.Dispose();
