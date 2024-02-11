@@ -206,7 +206,8 @@ namespace SoraDataEngine.Runtime.Manager
         /// 添加 Scope
         /// </summary>
         /// <param name="scope">要添加的 Scope</param>
-        public void RegistScope(IScope scope)
+        /// <returns>添加的 Scope</returns>
+        public IScope RegistScope(IScope scope)
         {
             if (_scopes.ContainsKey(scope.ID))
             {
@@ -215,6 +216,8 @@ namespace SoraDataEngine.Runtime.Manager
             }
             else
                 _scopes[scope.ID] = scope;
+
+            return scope;
         }
 
         /// <summary>
@@ -222,12 +225,14 @@ namespace SoraDataEngine.Runtime.Manager
         /// </summary>
         /// <param name="name">名称</param>
         /// <param name="parent">父 Scope</param>
-        public void RegistScope(string name, IScope parent)
+        /// <returns>添加的 Scope</returns>
+        public IScope RegistScope(string name, IScope parent)
         {
             string id = Guid.NewGuid().ToString();
             IScope scope = ScopeFactory.MakeScope(name, parent, _rootScope, this);
             _scopes.Add(id, scope);
             _scopesFullNameID.Add(scope.FullName, id);
+            return scope;
         }
 
         /// <summary>
