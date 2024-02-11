@@ -7,6 +7,7 @@ Stopwatch stopwatch = Stopwatch.StartNew();
 MainTest mainTest = new MainTest();
 mainTest.CycleEventTest();
 mainTest.ScheduledEventTest();
+mainTest.MessengerTest();
 mainTest.Run();
 Thread.Sleep(1000);
 mainTest.Stop();

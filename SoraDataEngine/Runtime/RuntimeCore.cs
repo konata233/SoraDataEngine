@@ -29,23 +29,15 @@ namespace SoraDataEngine.Runtime
             Scheduler = new Scheduler();
 
             Messenger = new Messenger();
-
             AttributeBinder = new AttributeBinder();
 
             IsCoreStarted = false;
             Instance = this;
         }
 
-        public RuntimeCore(IClock clock)
+        public RuntimeCore(IClock clock) : this()
         {
-            ScopeManager = new ScopeManager();
-            ScopeManager.ResolveScopes(); // not implemented yet!!
-
-            EventManager = new EventManager();
             Scheduler = new Scheduler(clock);
-
-            IsCoreStarted = false;
-            Instance = this;
         }
 
         public void Start()

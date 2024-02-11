@@ -12,32 +12,34 @@ namespace SoraDataEngine.Runtime.Timeline
     public class Clock : IClock
     {
         public bool IsRunning { get; private set; }
+        private bool _isClockFlipped;
+
         public bool IsClockFlipped 
         {
             get 
             {
-                if (IsClockFlipped)
+                if (_isClockFlipped)
                 {
-                    IsClockFlipped = false;
+                    _isClockFlipped = false;
                     return true;
                 }
                 else { return false; }
             } 
             private set
             {
-                IsClockFlipped = value;
+                _isClockFlipped = value;
             }
         }
 
         public Clock() 
         {
             IsRunning = false;
-            IsClockFlipped = false;
+            _isClockFlipped = false;
         }
 
         public void Flip()
         {
-            if (IsRunning) IsClockFlipped = true;
+            if (IsRunning) _isClockFlipped = true;
         }
 
         public void Start()

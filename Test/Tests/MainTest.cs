@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SoraDataEngine.Runtime.Binding;
 
 namespace Test.Tests
 {
@@ -49,6 +50,21 @@ namespace Test.Tests
                         })
                 }
             , 10, 12));
+        }
+
+        public void MessengerTest()
+        {
+            Console.WriteLine(RuntimeCore.Messenger == null);
+            RuntimeCore.Messenger?.RegistListener(new Listener("test.lis", new Action<ulong, MessageCapsule>(
+                (ulong time, MessageCapsule capsule) =>
+                {
+                    var msg = (string)capsule.Message[0];
+                    var sender = capsule.Sender;
+                    Console.WriteLine("message recv: " + msg + ";sender: " + sender.ToString());
+                }
+                )));
+
+            RuntimeCore.Messenger?.SendMessage(new MessageCapsule(this, "test.lis", "helloworld"));
         }
 
         public void Run()
