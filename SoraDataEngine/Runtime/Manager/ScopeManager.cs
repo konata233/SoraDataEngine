@@ -37,7 +37,7 @@ namespace SoraDataEngine.Runtime.Manager
         /// </summary>
         public void ResolveScopes()
         {
-            // Not implemented yet!!
+            throw new NotImplementedException();
         }
 
         /// <summary>

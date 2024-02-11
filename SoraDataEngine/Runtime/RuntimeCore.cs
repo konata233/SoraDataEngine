@@ -1,16 +1,20 @@
 ﻿using SoraDataEngine.Runtime.Binding;
+using SoraDataEngine.Runtime.Loader;
 using SoraDataEngine.Runtime.Manager;
 using SoraDataEngine.Runtime.Timeline;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace SoraDataEngine.Runtime
 {
+    [Serializable]
     public class RuntimeCore : IDisposable
     {
+        public static AsmLoader? AsmLoader { get; private set; }
         public static RuntimeCore? Instance { get; private set; }
         public static ScopeManager? ScopeManager { get; private set; }
         public static EventManager? EventManager { get; private set; }
@@ -20,10 +24,10 @@ namespace SoraDataEngine.Runtime
 
         public static bool IsCoreStarted { get; private set; } = false;
         
-        public RuntimeCore()
+        public RuntimeCore(AsmLoaderConfig loaderConfig)
         {
+            AsmLoader = new AsmLoader(loaderConfig);
             ScopeManager = new ScopeManager();
-            ScopeManager.ResolveScopes(); // not implemented yet!!
 
             EventManager = new EventManager();
             Scheduler = new Scheduler();
@@ -35,19 +39,39 @@ namespace SoraDataEngine.Runtime
             Instance = this;
         }
 
-        public RuntimeCore(IClock clock) : this()
+        public RuntimeCore(AsmLoaderConfig loaderConfig, IClock clock) : this(loaderConfig)
         {
             Scheduler = new Scheduler(clock);
         }
 
         public void Start()
         {
+            AsmLoader?.StartAllEntries();
             Scheduler?.Start();
             IsCoreStarted = true;
         }
 
+        public void Pause()
+        {
+            Scheduler?.Pause();
+        }
+
+        public void Restart()
+        {
+            Scheduler?.Restart();
+        }
+
+        public void Stop()
+        {
+            Scheduler?.Stop();
+            AsmLoader?.StopAllEntries();
+        }
+
         public void Dispose()
         {
+            Scheduler?.Dispose();
+            Messenger?.Dispose();
+            IsCoreStarted = false;
         }
     }
 }

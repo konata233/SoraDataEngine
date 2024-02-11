@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Runtime.Binding
 {
-    public class Messenger
+    public class Messenger : IDisposable
     {
         public static Messenger? Instance { get; set; }
         public Dictionary<string, IListener> Listeners { get; set; }
@@ -85,6 +85,12 @@ namespace SoraDataEngine.Runtime.Binding
         protected virtual void OnListenerReceived(ulong time, MessageCapsule capsule)
         {
             ListenerReceived?.Invoke(time, capsule);
+        }
+
+        public void Dispose()
+        {
+            Listeners?.Clear();
+            _messagesCache.Clear();
         }
     }
 }
