@@ -10,17 +10,26 @@ namespace SoraDataEngine.Commons.Event
 {
     public class ScheduledEvent : IEvent
     {
-        public ulong ScheduledTime { get; set; }
+        public ulong StartTime { get; set; }
+        public ulong EndTime { get; set; }
         public ICondition Condition { get; set; }
         public IEnumerable<IEffect> Effects { get; set; }
 
         public string EventID {  get; set; }
 
-        public ScheduledEvent(ICondition condition, IEnumerable<IEffect> effects, ulong scheduledTime)
+        /// <summary>
+        /// 创建计划事件
+        /// </summary>
+        /// <param name="condition">条件</param>
+        /// <param name="effects">效果</param>
+        /// <param name="startTime">开始时间（闭区间）</param>
+        /// <param name="endTime">结束时间（闭区间！！！）</param>
+        public ScheduledEvent(ICondition condition, IEnumerable<IEffect> effects, ulong startTime, ulong endTime)
         {
             EventID = Guid.NewGuid().ToString();
             Effects = effects;
-            ScheduledTime = scheduledTime;
+            StartTime = startTime;
+            EndTime = endTime;
             Condition = condition;
         }
 
@@ -29,7 +38,7 @@ namespace SoraDataEngine.Commons.Event
             if (objects == null || objects.Length == 0) return false;
             if (objects[0].GetType() == typeof(ulong))
             {
-                if ((ulong)objects[0] >= ScheduledTime && Condition.IsSatisfied())
+                if ((ulong)objects[0] >= StartTime && ((ulong)objects[0]) <= EndTime && Condition.IsSatisfied())
                 {
                     Raise(objects);
                     return true;
@@ -49,7 +58,7 @@ namespace SoraDataEngine.Commons.Event
                     {
                         if (action is not null)
                         {
-                            action();
+                            action((ulong)objects[0]);
                         }
                     }
                 }

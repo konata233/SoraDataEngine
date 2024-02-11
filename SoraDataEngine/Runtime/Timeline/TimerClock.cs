@@ -14,35 +14,36 @@ namespace SoraDataEngine.Runtime.Timeline
         const int DEFAULT_PERIOD = 1000; // ms
         private Timer _timer;
         public bool IsRunning {  get; private set; }
+        private bool _isClockFlipped;
 
         public bool IsClockFlipped
         {
             get
             {
-                if (IsClockFlipped)
+                if (_isClockFlipped)
                 {
-                    IsClockFlipped = false;
+                    _isClockFlipped = false;
                     return true;
                 }
                 else { return false; }
             }
             private set
             {
-                IsClockFlipped = value;
+                _isClockFlipped = value;
             }
         }
 
         public TimerClock() 
         { 
             IsRunning = false;
-            IsClockFlipped = false;
+            _isClockFlipped = false;
             _timer = new Timer(this._Flip, null, 0, DEFAULT_PERIOD);
         }
 
         public TimerClock(int period)
         {
             IsRunning = false;
-            IsClockFlipped = false;
+            _isClockFlipped = false;
             _timer = new Timer(this._Flip, null, 0, period);
         }
 
@@ -53,7 +54,7 @@ namespace SoraDataEngine.Runtime.Timeline
 
         public void Flip()
         {
-            if (IsRunning) IsClockFlipped = true;
+            if (IsRunning) _isClockFlipped = true;
         }
 
         public void Start()
@@ -69,7 +70,7 @@ namespace SoraDataEngine.Runtime.Timeline
         public void Dispose()
         {
             IsRunning = false;
-            IsClockFlipped = false;
+            _isClockFlipped = false;
             _timer.Dispose();
         }
     }

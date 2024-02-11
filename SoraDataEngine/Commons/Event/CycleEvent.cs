@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Commons.Event
 {
-    internal class CycleEvent : IEvent
+    public class CycleEvent : IEvent
     {
         public ICondition Condition { get; set; }
         public IEnumerable<IEffect> Effects { get; set; }
@@ -55,7 +55,19 @@ namespace SoraDataEngine.Commons.Event
 
         public void Raise(params object[] objects)
         {
-            throw new NotImplementedException();
+            foreach (var effect in Effects)
+            {
+                if (effect is not null)
+                {
+                    foreach (var action in effect.Actions)
+                    {
+                        if (action is not null)
+                        {
+                            action((ulong)objects[0]);
+                        }
+                    }
+                }
+            }
         }
     }
 }

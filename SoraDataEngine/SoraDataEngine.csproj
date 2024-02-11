@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Scripting\" />
-    <Folder Include="Dev\" />
   </ItemGroup>
 
   <ItemGroup>

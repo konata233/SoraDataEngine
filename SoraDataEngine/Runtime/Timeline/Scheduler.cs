@@ -212,6 +212,7 @@ namespace SoraDataEngine.Runtime.Timeline
         private void _Proceed()
         {
             RuntimeCore.EventManager?.Tick(_elapsedTime);
+            RuntimeCore.Messenger?.Tick(_elapsedTime);
         }
 
         /// <summary>
@@ -228,47 +229,43 @@ namespace SoraDataEngine.Runtime.Timeline
 
         protected virtual void OnStart(SchedulerEventArgs e)
         {
-            EventHandler<SchedulerEventArgs> handler = SchedulerStartEvent;
-            if (handler != null) { handler(this, e); }
+            SchedulerStartEvent?.Invoke(this, e);
         }
 
         protected virtual void OnStop(SchedulerEventArgs e)
         {
-            EventHandler<SchedulerEventArgs> handler = SchedulerStopEvent;
-            if (handler != null) { handler(this,e); }
+            SchedulerStopEvent?.Invoke(this, e);
         }
 
         protected virtual void OnRestart(SchedulerEventArgs e)
         {
-            EventHandler<SchedulerEventArgs> handler = SchedulerRestartEvent;
-            if (handler != null) { handler(this, e); }
+            SchedulerRestartEvent?.Invoke(this, e);
         }
 
         protected virtual void OnTick(SchedulerEventArgs e)
         {
-            EventHandler<SchedulerEventArgs> handler = SchedulerTickEvent;
-            if (handler != null) { handler(this, e); }
+            SchedulerTickEvent?.Invoke(this, e);
         }
 
         /// <summary>
         /// 计划器启动时引发事件
         /// </summary>
-        public event EventHandler<SchedulerEventArgs> SchedulerStartEvent;
+        public event EventHandler<SchedulerEventArgs>? SchedulerStartEvent;
 
         /// <summary>
         /// 计划器重启时引发
         /// </summary>
-        public event EventHandler<SchedulerEventArgs> SchedulerRestartEvent;
+        public event EventHandler<SchedulerEventArgs>? SchedulerRestartEvent;
 
         /// <summary>
         /// 计划器停止时引发
         /// </summary>
-        public event EventHandler<SchedulerEventArgs> SchedulerStopEvent;
+        public event EventHandler<SchedulerEventArgs>? SchedulerStopEvent;
 
         /// <summary>
         /// 计时器触发随机刻时引发
         /// </summary>
-        public event EventHandler<SchedulerEventArgs> SchedulerTickEvent;
+        public event EventHandler<SchedulerEventArgs>? SchedulerTickEvent;
     }
 
     public class SchedulerEventArgs : EventArgs

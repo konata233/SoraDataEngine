@@ -10,6 +10,6 @@ namespace SoraDataEngine.Commons.Effects
     public interface IEffect
     {
         ICondition Condition { get; set; }
-        IEnumerable<Action> Actions { get; set; }
+        IEnumerable<Action<ulong>> Actions { get; set; }
     }
 }

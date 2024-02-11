@@ -1,4 +1,5 @@
-﻿using SoraDataEngine.Runtime.Manager;
+﻿using SoraDataEngine.Runtime.Binding;
+using SoraDataEngine.Runtime.Manager;
 using SoraDataEngine.Runtime.Timeline;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace SoraDataEngine.Runtime
         public static ScopeManager? ScopeManager { get; private set; }
         public static EventManager? EventManager { get; private set; }
         public static Scheduler? Scheduler { get; private set; }
+        public static Messenger? Messenger { get; private set; }
 
         public static bool IsCoreStarted { get; private set; } = false;
         
@@ -24,6 +26,8 @@ namespace SoraDataEngine.Runtime
 
             EventManager = new EventManager();
             Scheduler = new Scheduler();
+
+            Messenger = new Messenger();
 
             IsCoreStarted = false;
             Instance = this;

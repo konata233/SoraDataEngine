@@ -41,7 +41,7 @@ namespace SoraDataEngine.Commons.Event
                     {
                         if (action is not null)
                         {
-                            action();
+                            action((ulong)objects[0]);
                         }
                     }
                 }

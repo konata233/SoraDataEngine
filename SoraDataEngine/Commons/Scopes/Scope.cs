@@ -12,7 +12,6 @@ using SoraDataEngine.Runtime.Manager;
 
 namespace SoraDataEngine.Commons.Scopes
 {
-    [Serializable]
     public class Scope : IScope
     {
         public Scope(string name, string id, string description, IScope? root, IScope? parent, ScopeManager manager)

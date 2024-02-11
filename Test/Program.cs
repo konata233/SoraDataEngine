@@ -1,19 +1,14 @@
 ﻿using SoraDataEngine.Commons.Condition;
 using System.Diagnostics;
+using Test.Tests;
 using Tests;
 
-A a = new A();
 Stopwatch stopwatch = Stopwatch.StartNew();
-for (int i = 0; i < 100000; i++)
-    ConditionTest.Test();
+MainTest mainTest = new MainTest();
+mainTest.CycleEventTest();
+mainTest.ScheduledEventTest();
+mainTest.Run();
+Thread.Sleep(1000);
+mainTest.Stop();
 stopwatch.Stop();
 Console.WriteLine(stopwatch.ElapsedMilliseconds.ToString());
-
-class A
-{
-    public static A Instance { get; set; }
-    public A()
-    {
-        Instance = this;
-    }
-}
