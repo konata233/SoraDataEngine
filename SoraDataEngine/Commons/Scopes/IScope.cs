@@ -179,7 +179,7 @@ namespace SoraDataEngine.Commons.Scopes
         /// </summary>
         /// <param name="name"></param>
         /// <param name="value"></param>
-        void AddAttribute(string name, IAttribute value);
+        IAttribute AddAttribute(string name, IAttribute value);
         /// <summary>
         /// 获取 Attribute
         /// </summary>

@@ -81,7 +81,7 @@ namespace SoraDataEngine.Commons.Scopes
 
         public ScopeManager Manager { get; set; }
 
-        public void AddAttribute(string name, IAttribute attribute)
+        public IAttribute AddAttribute(string name, IAttribute attribute)
         {
             if (Attributes.ContainsKey(name))
             {
@@ -91,6 +91,7 @@ namespace SoraDataEngine.Commons.Scopes
             {
                 Attributes.Add(name, attribute);
             }
+            return Attributes[name];
         }
 
         public void AddChild(IScope child)
