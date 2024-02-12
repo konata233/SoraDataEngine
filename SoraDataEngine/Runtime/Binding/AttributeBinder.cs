@@ -7,9 +7,19 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Runtime.Binding
 {
+    /// <summary>
+    /// 属性侦听绑定器
+    /// </summary>
     public class AttributeBinder
     {
+        /// <summary>
+        /// 实例
+        /// </summary>
         public static AttributeBinder? Instance;
+
+        /// <summary>
+        /// 实例化
+        /// </summary>
         public AttributeBinder()
         {
             Instance = RuntimeCore.AttributeBinder;

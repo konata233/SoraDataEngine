@@ -21,17 +21,31 @@ namespace SoraDataEngine.Runtime.Manager
             events = new Dictionary<string, IEvent>();
         }
 
-        public void RegistEvent(IEvent @event)
+        /// <summary>
+        /// 注册事件
+        /// </summary>
+        /// <param name="event">要注册的事件</param>
+        /// <returns>事件 ID</returns>
+        public string RegistEvent(IEvent @event)
         {
             events.Add(@event.EventID, @event);
+            return @event.EventID;
         }
 
+        /// <summary>
+        /// 移除事件
+        /// </summary>
+        /// <param name="eventID">事件 ID</param>
         public void RemoveEvent(string @eventID)
         {
             events.Remove(@eventID);
         }
 
-        public void Tick(ulong currentTime)
+        /// <summary>
+        /// 随机刻更新调用
+        /// </summary>
+        /// <param name="currentTime"></param>
+        internal void Tick(ulong currentTime)
         {
             foreach (var @event in events.Values)
             {

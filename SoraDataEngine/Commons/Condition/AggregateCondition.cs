@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Commons.Condition
 {
+    /// <summary>
+    /// 累加条件
+    /// </summary>
     public class AggregateCondition : ICondition
     {
         /// <summary>
@@ -34,9 +37,10 @@ namespace SoraDataEngine.Commons.Condition
 
         /// <summary>
         /// 自动创建此类的实例，不需要手动 Build()
+        /// 但是只要更新 ConditionType，就需要手动 Build()
         /// </summary>
-        /// <param name="conditions"></param>
-        /// <param name="type"></param>
+        /// <param name="conditions">条件</param>
+        /// <param name="type">类型</param>
         public AggregateCondition(IEnumerable<ICondition> conditions, AggregateConditionType type = AggregateConditionType.All)
         {
             Conditions = conditions;
@@ -47,7 +51,7 @@ namespace SoraDataEngine.Commons.Condition
         /// 手动构建此类的实例
         /// </summary>
         /// <param name="customizedIsSatisfiedFunc">自定义检测条件是否满足的函数</param>
-        /// <returns></returns>
+        /// <returns>构建结果</returns>
         public AggregateCondition Build(Func<bool> customizedIsSatisfiedFunc)
         {
             IsSatisfied = customizedIsSatisfiedFunc;
@@ -57,7 +61,7 @@ namespace SoraDataEngine.Commons.Condition
         /// <summary>
         /// 手动构建此类的实例
         /// </summary>
-        /// <returns></returns>
+        /// <returns>构建结果</returns>
         public AggregateCondition Build()
         {
             IsSatisfied = IsSatisfiedBuilder(ConditionType);

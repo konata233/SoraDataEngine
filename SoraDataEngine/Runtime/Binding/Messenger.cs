@@ -22,7 +22,7 @@ namespace SoraDataEngine.Runtime.Binding
             _messagesCache = new List<MessageCapsule>();
         }
 
-        public void Tick(ulong time)
+        internal void Tick(ulong time)
         {
             foreach (var msg in _messagesCache)
             {

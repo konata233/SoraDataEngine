@@ -8,12 +8,22 @@ using System.Threading.Tasks;
 
 namespace SoraDataEngine.Runtime.Loader
 {
+    /// <summary>
+    /// 程序集插件加载器
+    /// </summary>
     public class AsmLoader
     {
-        public AsmLoader? Instance { get; private set; }
+        /// <summary>
+        /// 此类的实例
+        /// </summary>
+        public static AsmLoader? Instance { get; private set; }
         private List<Assembly> _assemblyList = new List<Assembly>();
         private List<(IEntry, IEntryConfig)> _entries = new List<(IEntry, IEntryConfig)>();
 
+        /// <summary>
+        /// 实例化此类
+        /// </summary>
+        /// <param name="config">配置</param>
         public AsmLoader(AsmLoaderConfig config) 
         {
             Instance = RuntimeCore.AsmLoader;
@@ -27,6 +37,9 @@ namespace SoraDataEngine.Runtime.Loader
             }
         }
 
+        /// <summary>
+        /// 加载所有插件
+        /// </summary>
         public void LoadAllEntries()
         {
             foreach (Assembly asm in _assemblyList)
@@ -53,6 +66,9 @@ namespace SoraDataEngine.Runtime.Loader
             }
         }
 
+        /// <summary>
+        /// 按 StartLevel 从小到大顺序启动所有插件程序集
+        /// </summary>
         public void StartAllEntries()
         {
             IEnumerable<IEntry> query = 
@@ -65,6 +81,9 @@ namespace SoraDataEngine.Runtime.Loader
             }
         }
 
+        /// <summary>
+        /// 按 StartLevel 从大到小终止所有插件程序集
+        /// </summary>
         public void StopAllEntries()
         {
             IEnumerable<IEntry> query =
