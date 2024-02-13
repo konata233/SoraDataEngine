@@ -6,12 +6,12 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SoraDataEngine.Commons
+namespace SoraDataEngine.Commons.Serializers
 {
     /// <summary>
     /// 序列化工具
     /// </summary>
-    public class Serializer
+    public class BinarySerializer
     {
         /// <summary>
         /// 序列化一个对象
