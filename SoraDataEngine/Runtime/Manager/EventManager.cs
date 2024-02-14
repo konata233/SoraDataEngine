@@ -47,10 +47,13 @@ namespace SoraDataEngine.Runtime.Manager
         /// <param name="currentTime"></param>
         internal void Tick(ulong currentTime)
         {
-            foreach (var @event in events.Values)
+            Task.Run(() =>
             {
-                @event.Check(currentTime);
-            }
+                foreach (var @event in events.Values)
+                {
+                    @event.Check(currentTime);
+                }
+            });
         }
     }
 }

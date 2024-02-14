@@ -1,15 +1,22 @@
 ﻿using SoraDataEngine.Commons.Condition;
+using SoraDataEngine.Runtime;
 using System.Diagnostics;
 using Test.Tests;
 using Tests;
 
-Stopwatch stopwatch = Stopwatch.StartNew();
 MainTest mainTest = new MainTest();
-mainTest.CycleEventTest();
-mainTest.ScheduledEventTest();
-mainTest.MessengerTest();
+//mainTest.CycleEventTest();
+//mainTest.ScheduledEventTest();
+//mainTest.MessengerTest();
+mainTest.AsynchronousTaskBenchmarkTest();
+Stopwatch stopwatch = Stopwatch.StartNew();
 mainTest.Run();
-Thread.Sleep(1000);
+RuntimeCore.Scheduler?.FlipClock();
+while (mainTest.count < 1000000 * 0.475)
+{
+
+}
 mainTest.Stop();
 stopwatch.Stop();
+Console.WriteLine(mainTest.count);
 Console.WriteLine(stopwatch.ElapsedMilliseconds.ToString());

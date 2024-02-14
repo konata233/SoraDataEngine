@@ -15,9 +15,10 @@ namespace Test.Tests
     internal class MainTest
     {
         private RuntimeCore _runtimeCore;
+        public int count = 0;
         public MainTest() 
         {
-            _runtimeCore = new RuntimeCore(new TimerClock(1));
+            _runtimeCore = new RuntimeCore(new SoraDataEngine.Runtime.Loader.AsmLoaderConfig("D:\\.go\\", "*.ignore"));
         }
 
         public void CycleEventTest()
@@ -65,6 +66,30 @@ namespace Test.Tests
                 )));
 
             RuntimeCore.Messenger?.SendMessage(new MessageCapsule(this, "test.lis", "helloworld"));
+        }
+
+        public void AsynchronousTaskBenchmarkTest()
+        {
+            for (int i = 0; i < 1000000;  i++)
+            {
+                RuntimeCore.EventManager?.RegistEvent(
+                new CycleEvent(new Condition
+                {
+                    IsSatisfied = () => Random.Shared.Next(0, 100) > 50
+                },
+                new List<IEffect>
+                {
+                    new Effect(
+                        new TrueCondition(),
+                        new List<Action<ulong>>
+                        {
+                            new Action<ulong>(
+                            (ulong time) => count++
+                            )
+                        })
+                }
+                , 0, 100000, 1));
+            }
         }
 
         public void Run()

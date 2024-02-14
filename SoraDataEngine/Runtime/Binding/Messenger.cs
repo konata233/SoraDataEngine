@@ -24,10 +24,13 @@ namespace SoraDataEngine.Runtime.Binding
 
         internal void Tick(ulong time)
         {
-            foreach (var msg in _messagesCache)
+            Task.Run(() =>
             {
-                ListenerReceived?.Invoke(time, msg);
-            }
+                foreach (var msg in _messagesCache)
+                {
+                    ListenerReceived?.Invoke(time, msg);
+                }
+            });
             _messagesCache.Clear();
         }
 
