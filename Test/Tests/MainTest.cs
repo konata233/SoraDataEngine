@@ -9,6 +9,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SoraDataEngine.Runtime.Binding;
+using SoraDataEngine.Commons.Scopes;
+using SoraDataEngine.Commons.Attributes;
+using Attribute = SoraDataEngine.Commons.Attributes.Attribute;
+using System.Diagnostics;
 
 namespace Test.Tests
 {
@@ -18,7 +22,7 @@ namespace Test.Tests
         public int count = 0;
         public MainTest() 
         {
-            _runtimeCore = new RuntimeCore(new SoraDataEngine.Runtime.Loader.AsmLoaderConfig("D:\\.go\\", "*.ignore"), new TimerClock(100));
+            _runtimeCore = new RuntimeCore(new SoraDataEngine.Runtime.Loader.AsmLoaderConfig("D:\\.go\\", "*.ignore"));
         }
 
         public void CycleEventTest()
@@ -90,6 +94,49 @@ namespace Test.Tests
                 }
                 , 0, 100000, 1));
             }
+        }
+
+        public void CacheTest(int t)
+        {
+            long s1, s2;
+            s1 = 0;
+            s2 = 0;
+            for (int i = 0;i < t;i++)
+            {
+                var ret = _SingleCacheTest();
+                s1 += ret.Item1;
+                s2 += ret.Item2;
+            }
+            Console.WriteLine("Tests:" + t.ToString() + "; t1: " +  (s1/t).ToString() + "; t2: " + (s2/t).ToString());
+        }
+
+        private (long, long) _SingleCacheTest()
+        {
+            var ch = RuntimeCore.ScopeManager?.GetRootScope().AddChild(new Scope("test", string.Empty, RuntimeCore.ScopeManager.GetRootScope(), RuntimeCore.ScopeManager.GetRootScope()));
+            for (int i = 0; i < 100000; i++)
+            {
+                ch.AddAttribute(new Attribute("attr" + i.ToString(), 1));
+            }
+            Stopwatch sw = new Stopwatch();
+            string name = ch.FullName + ".attr"+Random.Shared.Next(0, 100000-1);
+            sw.Start();
+            for (int i = 0; i < 100000 ; i++)
+            {
+                _ = RuntimeCore.ScopeManager?.GetAttributeByFullName(name, cache: false);
+            }
+            sw.Stop();
+            long t1 = sw.ElapsedMilliseconds;
+            //Console.WriteLine(sw.ElapsedMilliseconds.ToString());
+            sw.Restart();
+            for (int i = 0;i < 100000; i++)
+            {
+                _ = RuntimeCore.ScopeManager?.GetAttributeByFullName(name, cache: true);
+            }
+            sw.Stop();
+            long t2 = sw.ElapsedMilliseconds;
+            //Console.WriteLine(sw.ElapsedMilliseconds.ToString());
+            RuntimeCore.ScopeManager?.RemoveScopeByFullName(ch.FullName);
+            return (t1, t2);
         }
 
         public void Run()

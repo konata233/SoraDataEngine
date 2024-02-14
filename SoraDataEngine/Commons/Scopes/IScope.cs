@@ -38,7 +38,7 @@ namespace SoraDataEngine.Commons.Scopes
         /// <summary>
         /// Scope 所属的 ScopeManager
         /// </summary>
-        ScopeManager Manager { get; }
+        ScopeManager? Manager { get; }
 
 
         /// <summary>
@@ -62,14 +62,14 @@ namespace SoraDataEngine.Commons.Scopes
         /// 添加一个子 Scope
         /// </summary>
         /// <param name="child"></param>
-        void AddChild(IScope child);
+        IScope AddChild(IScope child);
 
         /// <summary>
         /// 添加一个子 Scope
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="child"></param>
-        void AddChild<T>(T child) where T : IScope;
+        T AddChild<T>(T child) where T : IScope;
 
         /// <summary>
         /// 添加多个子 Scope
@@ -174,6 +174,12 @@ namespace SoraDataEngine.Commons.Scopes
         /// <returns></returns>
         IScope? GetRoot();
 
+        /// <summary>
+        /// 添加或者更新 Attribute
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        IAttribute AddAttribute(IAttribute value);
         /// <summary>
         /// 添加或者更新 Attribute
         /// </summary>

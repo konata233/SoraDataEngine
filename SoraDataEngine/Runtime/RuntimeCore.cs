@@ -35,6 +35,7 @@ namespace SoraDataEngine.Runtime
 
             Messenger = new Messenger();
             AttributeBinder = new AttributeBinder();
+            CacheManager = new CacheManager();
 
             IsCoreStarted = false;
             Instance = this;

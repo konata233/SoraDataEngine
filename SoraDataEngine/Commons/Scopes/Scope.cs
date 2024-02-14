@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using SoraDataEngine.Commons;
 using SoraDataEngine.Commons.Attributes;
+using SoraDataEngine.Runtime;
 using SoraDataEngine.Runtime.Factory;
 using SoraDataEngine.Runtime.Manager;
 
@@ -14,6 +15,21 @@ namespace SoraDataEngine.Commons.Scopes
 {
     public class Scope : IScope
     {
+        public Scope(string name, string description, IScope? root, IScope? parent)
+        {
+            Name = name;
+            FullName = parent != null ? parent.FullName + "." + name : name;
+            ID = Guid.NewGuid().ToString();
+            Description = description;
+            Root = root;
+            Parent = parent;
+            ScopeType = typeof(IScope);
+            Children = new List<IScope>();
+            Attributes = new Dictionary<string, IAttribute>();
+            IsRootScope = false;
+            Manager = RuntimeCore.ScopeManager;
+        }
+
         public Scope(string name, string id, string description, IScope? root, IScope? parent, ScopeManager manager)
         {
             Name = name;
@@ -79,7 +95,12 @@ namespace SoraDataEngine.Commons.Scopes
 
         public bool IsRootScope { get; set; }
 
-        public ScopeManager Manager { get; set; }
+        public ScopeManager? Manager { get; set; }
+
+        public IAttribute AddAttribute(IAttribute attribute)
+        {
+            return AddAttribute(attribute.Name, attribute);
+        }
 
         public IAttribute AddAttribute(string name, IAttribute attribute)
         {
@@ -94,12 +115,13 @@ namespace SoraDataEngine.Commons.Scopes
             return Attributes[name];
         }
 
-        public void AddChild(IScope child)
+        public IScope AddChild(IScope child)
         {
             Children.Add(child);
+            return child;
         }
 
-        public void AddChild<T>(T child) where T : IScope
+        public T AddChild<T>(T child) where T : IScope
         {
             if (child != null)
             {
@@ -112,6 +134,7 @@ namespace SoraDataEngine.Commons.Scopes
                     ?? "Fail to add child to the scope! " + ToString()
                     );
             }
+            return child;
         }
 
         public void AddChildren(List<IScope> children)
