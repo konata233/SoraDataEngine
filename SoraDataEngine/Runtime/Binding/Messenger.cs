@@ -22,16 +22,16 @@ namespace SoraDataEngine.Runtime.Binding
             _messagesCache = new List<MessageCapsule>();
         }
 
-        internal void Tick(ulong time)
+        internal Task Tick(ulong time)
         {
-            Task.Run(() =>
+            return Task.Factory.StartNew(() =>
             {
                 foreach (var msg in _messagesCache)
                 {
                     ListenerReceived?.Invoke(time, msg);
                 }
+                _messagesCache.Clear();
             });
-            _messagesCache.Clear();
         }
 
         public void SendMessage(MessageCapsule message)

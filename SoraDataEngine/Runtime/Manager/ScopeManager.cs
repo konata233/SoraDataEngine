@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using SoraDataEngine.Commons.Attributes;
 using SoraDataEngine.Commons.Scopes;
 using SoraDataEngine.Runtime.Factory;
 using Scope = SoraDataEngine.Commons.Scopes.Scope;
@@ -68,25 +69,64 @@ namespace SoraDataEngine.Runtime.Manager
         /// <summary>
         /// 通过 全名 获取 Scope
         /// </summary>
-        /// <param name="fullName">全名</param>
+        /// <param name="fullname">全名</param>
         /// <param name="ignoreCase">是否忽略大小写</param>
+        /// <param name="cache">是否缓存获取到的值</param>
         /// <returns></returns>
-        public IScope? GetScopeByFullName(string fullName, bool ignoreCase = false)
+        public IScope? GetScopeByFullName(string fullname, bool ignoreCase = false, bool cache = true)
         {
-            if (!ignoreCase)
+            IScope? ret = null;
+            if (!RuntimeCore.CacheManager.ContainsKey(fullname))
             {
-                if (_scopesFullNameID.ContainsKey(fullName)) 
-                    return _scopes[_scopesFullNameID[fullName]];
+                if (!ignoreCase)
+                {
+                    if (_scopesFullNameID.ContainsKey(fullname))
+                        ret = _scopes[_scopesFullNameID[fullname]];
+                }
+                else
+                {
+                    foreach (IScope scope in _scopes.Values)
+                    {
+                        if (ignoreCase && scope.FullName.ToLower() == fullname.ToLower())
+                        {
+                            ret = scope;
+                            break;
+                        }
+                    }
+                }
+                if (cache && ret is not null) RuntimeCore.CacheManager?.SetValue(fullname, ret);
+                return ret;
             }
             else
             {
-                foreach (IScope scope in _scopes.Values)
-                {
-                    if (ignoreCase && scope.FullName.ToLower() == fullName.ToLower()) 
-                        return scope;
-                }
+                return (IScope?)RuntimeCore.CacheManager?.GetValue(fullname);
             }
-            return null;
+        }
+
+        /// <summary>
+        /// 通过全名获取属性 - <Scope 全名>.<属性名>
+        /// </summary>
+        /// <param name="fullname">属性全名</param>
+        /// <param name="ignoreCase">是否忽略大小写</param>
+        /// <param name="cache">是否缓存</param>
+        /// <returns>属性</returns>
+        public IAttribute? GetAttributeByFullName(string fullname, bool ignoreCase = false, bool cache = true)
+        {
+            if (!RuntimeCore.CacheManager.ContainsKey(fullname)) 
+            {
+                string[] sep = fullname.Split('.');
+                string attr = sep.Last();
+                string scope = string.Join('.', sep.Take(sep.Length - 1));
+
+                IScope? s = GetScopeByFullName(scope, ignoreCase, cache);
+                IAttribute? ret = s?.GetAttribute(attr);
+                if (cache && ret is not null) RuntimeCore.CacheManager?.SetValue(attr, ret);
+                return ret;
+            }
+            else
+            {
+                return (IAttribute?)RuntimeCore.CacheManager?.GetValue(fullname);
+            }
         }
 
         /// <summary>

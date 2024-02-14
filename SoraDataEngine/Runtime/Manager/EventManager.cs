@@ -45,9 +45,9 @@ namespace SoraDataEngine.Runtime.Manager
         /// 随机刻更新调用
         /// </summary>
         /// <param name="currentTime"></param>
-        internal void Tick(ulong currentTime)
+        internal Task Tick(ulong currentTime)
         {
-            Task.Run(() =>
+            return Task.Factory.StartNew(() =>
             {
                 foreach (var @event in events.Values)
                 {

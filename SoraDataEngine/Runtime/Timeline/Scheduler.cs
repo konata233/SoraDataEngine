@@ -209,10 +209,14 @@ namespace SoraDataEngine.Runtime.Timeline
         /// <summary>
         /// 随机刻执行的逻辑
         /// </summary>
-        private void _Proceed()
+        private async void _Proceed()
         {
-            RuntimeCore.EventManager?.Tick(_elapsedTime);
-            RuntimeCore.Messenger?.Tick(_elapsedTime);
+            var tsk1 = RuntimeCore.EventManager?.Tick(_elapsedTime);
+            var tsk2 = RuntimeCore.Messenger?.Tick(_elapsedTime);
+            if (tsk1 != null && tsk2 != null)
+                await Task.WhenAll(tsk1, tsk2);
+
+            RuntimeCore.CacheManager?.Clear();
         }
 
         /// <summary>

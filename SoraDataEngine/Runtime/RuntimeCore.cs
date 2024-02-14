@@ -21,6 +21,7 @@ namespace SoraDataEngine.Runtime
         public static Scheduler? Scheduler { get; private set; }
         public static Messenger? Messenger { get; private set; }
         public static AttributeBinder? AttributeBinder { get; private set; }
+        public static CacheManager? CacheManager { get; private set; }
 
         public static bool IsCoreStarted { get; private set; } = false;
         
