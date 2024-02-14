@@ -197,5 +197,10 @@ namespace SoraDataEngine.Commons.Scopes
         /// </summary>
         /// <param name="name"></param>
         void RemoveAttribute(string name);
+
+        /// <summary>
+        /// 销毁该 Scope
+        /// </summary>
+        void Dispose();
     }
 }

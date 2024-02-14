@@ -240,6 +240,7 @@ namespace SoraDataEngine.Commons.Scopes
             {
                 if (c.ID == child.ID)
                 {
+                    c.Dispose();
                     Children.Remove(c);
                 }
             }
@@ -251,6 +252,7 @@ namespace SoraDataEngine.Commons.Scopes
             {
                 if (c.FullName == fullName)
                 {
+                    c.Dispose();
                     Children.Remove(c);
                 }
             }
@@ -262,6 +264,7 @@ namespace SoraDataEngine.Commons.Scopes
             {
                 if (c.ID == ID)
                 {
+                    c.Dispose();
                     Children.Remove(c);
                 }
             }
@@ -273,6 +276,7 @@ namespace SoraDataEngine.Commons.Scopes
             {
                 if (c.Name == name)
                 {
+                    c.Dispose();
                     Children.Remove(c);
                 }
             }
@@ -285,6 +289,16 @@ namespace SoraDataEngine.Commons.Scopes
                 "ID: ", ID, 
                 "Descr: ", Description, 
                 "Parent: ", Parent?.Name);
+        }
+
+        public void Dispose()
+        {
+            Attributes.Clear();
+            foreach (var c in Children)
+            {
+                if (c is not null) c.Dispose();
+            }
+            Children.Clear();
         }
     }
 }
