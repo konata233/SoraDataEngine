@@ -18,7 +18,7 @@ namespace Test.Tests
         public int count = 0;
         public MainTest() 
         {
-            _runtimeCore = new RuntimeCore(new SoraDataEngine.Runtime.Loader.AsmLoaderConfig("D:\\.go\\", "*.ignore"));
+            _runtimeCore = new RuntimeCore(new SoraDataEngine.Runtime.Loader.AsmLoaderConfig("D:\\.go\\", "*.ignore"), new TimerClock(100));
         }
 
         public void CycleEventTest()
@@ -70,7 +70,7 @@ namespace Test.Tests
 
         public void AsynchronousTaskBenchmarkTest()
         {
-            for (int i = 0; i < 1000000;  i++)
+            for (int i = 0; i < 100000;  i++)
             {
                 RuntimeCore.EventManager?.RegistEvent(
                 new CycleEvent(new Condition

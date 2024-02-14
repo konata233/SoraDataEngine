@@ -11,11 +11,7 @@ MainTest mainTest = new MainTest();
 mainTest.AsynchronousTaskBenchmarkTest();
 Stopwatch stopwatch = Stopwatch.StartNew();
 mainTest.Run();
-RuntimeCore.Scheduler?.FlipClock();
-while (mainTest.count < 1000000 * 0.475)
-{
-
-}
+Thread.Sleep(1000);
 mainTest.Stop();
 stopwatch.Stop();
 Console.WriteLine(mainTest.count);
