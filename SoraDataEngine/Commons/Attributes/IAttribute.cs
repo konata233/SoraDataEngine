@@ -15,5 +15,7 @@ namespace SoraDataEngine.Commons.Attributes
         AttributeType AttrType { get; }
         object? Value { get; set; }
         event Action<object?, object?> OnValueChanged;
+
+        void Dispose();
     }
 }

@@ -135,6 +135,7 @@ namespace SoraDataEngine.Runtime.Manager
         /// <param name="id">ID</param>
         public void RemoveScopeByID(string id)
         {
+            _scopes[id].Dispose();
             _scopes.Remove(id);
         }
 
@@ -147,8 +148,11 @@ namespace SoraDataEngine.Runtime.Manager
         {
             foreach (IScope scope in _scopes.Values)
             {
-                if (scope.Name == name || (ignoreCase && scope.FullName.ToLower() == name.ToLower())) 
+                if (scope.Name == name || (ignoreCase && scope.FullName.ToLower() == name.ToLower()))
+                {
+                    scope.Dispose();
                     _scopes.Remove(scope.ID);
+                }
                 return;
             }
         }
@@ -172,8 +176,11 @@ namespace SoraDataEngine.Runtime.Manager
             {
                 foreach (IScope scope in _scopes.Values)
                 {
-                    if (ignoreCase && scope.FullName.ToLower() == fullName.ToLower()) 
+                    if (ignoreCase && scope.FullName.ToLower() == fullName.ToLower())
+                    {
+                        scope.Dispose();
                         _scopes.Remove(scope.ID);
+                    }
                     return;
                 }
             }

@@ -9,7 +9,7 @@ namespace SoraDataEngine.Commons.Attributes
     /// <summary>
     /// 基础属性类
     /// </summary>
-    public class Attribute : IAttribute
+    public class Attribute : IAttribute, IDisposable
     {
         public string Name { get; private set; }
         public AttributeType AttrType { get; set; } = AttributeType.None;
@@ -48,6 +48,11 @@ namespace SoraDataEngine.Commons.Attributes
         public override string ToString()
         {
             return string.Concat("Attribute ", Name, "Type:", AttrType.ToString() + "Value: ", Value?.ToString());
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

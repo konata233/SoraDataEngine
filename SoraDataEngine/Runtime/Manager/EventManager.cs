@@ -1,4 +1,5 @@
-﻿using SoraDataEngine.Commons.Event;
+﻿using SoraDataEngine.Commons.Condition;
+using SoraDataEngine.Commons.Event;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,15 @@ namespace SoraDataEngine.Runtime.Manager
     {
         public static EventManager? Instance { get; private set; }
         private Dictionary<string, IEvent> events;
+
+        /// <summary>
+        /// 建议使用，避免重复创建 TrueCondition 实例
+        /// </summary>
+        public static TrueCondition TrueConditionInst {  get; private set; } = new TrueCondition();
+        /// <summary>
+        /// 建议使用，避免重复创建 FalseCondition 实例
+        /// </summary>
+        public static FalseCondition FalseConditionInst { get; private set; } = new FalseCondition();
 
         public EventManager() 
         {

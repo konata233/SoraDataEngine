@@ -136,7 +136,20 @@ namespace Test.Tests
             long t2 = sw.ElapsedMilliseconds;
             //Console.WriteLine(sw.ElapsedMilliseconds.ToString());
             RuntimeCore.ScopeManager?.RemoveScopeByFullName(ch.FullName);
+            ch = null;
+            GC.Collect();
             return (t1, t2);
+        }
+
+        public void CallbackTest()
+        {
+            var ch = RuntimeCore.ScopeManager?.GetRootScope().AddChild(new Scope("test", string.Empty, RuntimeCore.ScopeManager.GetRootScope(), RuntimeCore.ScopeManager.GetRootScope()));
+            var attr = ch.AddAttribute(new Attribute("attr", 1));
+            RuntimeCore.AttributeBinder?.Bind(new Action<object?, object?>((object? obj1, object? obj2) =>
+            {
+                Console.WriteLine(obj1?.ToString() + obj2?.ToString());
+            }), attr);
+            attr.Value = 2;
         }
 
         public void Run()

@@ -316,12 +316,22 @@ namespace SoraDataEngine.Commons.Scopes
 
         public void Dispose()
         {
+            foreach (var c in Attributes.Values)
+            {
+                c.Dispose(); 
+                GC.Collect();
+            }
             Attributes.Clear();
             foreach (var c in Children)
             {
-                if (c is not null) c.Dispose();
+                if (c is not null)
+                {
+                    c.Dispose();
+                    GC.Collect();
+                }
             }
             Children.Clear();
+            GC.Collect();
         }
     }
 }
