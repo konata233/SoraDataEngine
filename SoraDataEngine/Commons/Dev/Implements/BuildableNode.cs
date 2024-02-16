@@ -2,6 +2,7 @@
 using SoraDataEngine.Commons.Effects;
 using SoraDataEngine.Commons.Event;
 using SoraDataEngine.Runtime;
+using SoraDataEngine.Runtime.Binding;
 using SoraDataEngine.Runtime.Manager;
 using System;
 using System.Collections.Generic;
@@ -102,13 +103,12 @@ namespace SoraDataEngine.Commons.Dev.Implements
         {
             Name = name;
             Parent = parent;
-            _buildAction = new Action<object?>(
-                (object? o) =>
-                {
-                    RuntimeCore.EventManager?.RegistEvent(@event);
-                    _customizedBuildAction?.Invoke(o);
-                    _BuildChildren(o);
-                });
+            _buildAction = (object? o) => 
+            { 
+                RuntimeCore.EventManager?.RegistEvent(@event); 
+                _customizedBuildAction?.Invoke(o); 
+                _BuildChildren(o); 
+            };
         }
     }
 
@@ -133,26 +133,27 @@ namespace SoraDataEngine.Commons.Dev.Implements
         { 
             _deferredTime = deferredTime;
             _st = 0;
-            _buildAction = new Action<object?>(
-                (object? o) =>
-                {
-                    RuntimeCore.EventManager?.RegistEvent(@event);
-                    _customizedBuildAction?.Invoke(o);
-                    RuntimeCore.EventManager?.RegistEvent(
-                        new ScheduledEvent(EventManager.TrueConditionInst, 
-                                new IEffect[]
-                                {
-                                    new Effect(EventManager.TrueConditionInst, new Action<ulong>[]{
-                                        new Action<ulong>((ulong time) => 
-                                        {
-                                            _BuildChildren(o);
-                                        })
-                                    })
-                                }, startTime: _st, endTime: _st
-                            )
-                        );
-                }
-                );
+            _buildAction = 
+            (object? o) => 
+            {
+                RuntimeCore.EventManager?.RegistEvent(@event); 
+                _customizedBuildAction?.Invoke(o); 
+                RuntimeCore.EventManager?.RegistEvent(
+                    new ScheduledEvent(EventManager.TrueConditionInst, 
+                    new IEffect[] 
+                    { 
+                        new Effect(EventManager.TrueConditionInst, 
+                        new Action<ulong>[] 
+                        { 
+                            (ulong time) => 
+                            { 
+                                _BuildChildren(o); 
+                            } 
+                        }
+                        ) 
+                    }, 
+                    startTime: _st, endTime: _st)); 
+            };
         }
 
         /// <summary>
@@ -190,13 +191,13 @@ namespace SoraDataEngine.Commons.Dev.Implements
         {
             Parent = previous;
             Next = next;
-            _buildAction = new Action<object?>(
+            _buildAction = 
                 (object? o) =>
                 {
                     RuntimeCore.EventManager?.RegistEvent(@event);
                     _customizedBuildAction?.Invoke(o);
                     _BuildNext(o);
-                });
+                };
         }
 
         /// <summary>
@@ -241,26 +242,26 @@ namespace SoraDataEngine.Commons.Dev.Implements
         {
             _deferredTime = deferredTime;
             _st = 0;
-            _buildAction = new Action<object?>(
-                (object? o) =>
-                {
-                    RuntimeCore.EventManager?.RegistEvent(@event);
-                    _customizedBuildAction?.Invoke(o);
-                    RuntimeCore.EventManager?.RegistEvent(
-                        new ScheduledEvent(EventManager.TrueConditionInst,
-                                new IEffect[]
-                                {
-                                    new Effect(EventManager.TrueConditionInst, new Action<ulong>[]{
-                                        new Action<ulong>((ulong time) =>
-                                        {
-                                            _BuildNext(o);
-                                        })
-                                    })
-                                }, startTime: _st, endTime: _st
-                            )
-                        );
-                }
-                );
+            _buildAction = 
+            (object? o) => 
+            { 
+                RuntimeCore.EventManager?.RegistEvent(@event); 
+                _customizedBuildAction?.Invoke(o); 
+                RuntimeCore.EventManager?.RegistEvent(
+                    new ScheduledEvent(EventManager.TrueConditionInst, 
+                    new IEffect[] 
+                    { 
+                        new Effect(EventManager.TrueConditionInst, 
+                        new Action<ulong>[] 
+                        { 
+                            (ulong time) => 
+                            { 
+                                _BuildNext(o); 
+                            } 
+                        }) 
+                    }, 
+                    startTime: _st, endTime: _st)); 
+            };
         }
 
         /// <summary>
@@ -270,6 +271,30 @@ namespace SoraDataEngine.Commons.Dev.Implements
         public override void Build(object? o)
         {
             _st = (RuntimeCore.Scheduler?.ElapsedTime ?? 0) + _deferredTime;
+            base.Build(o);
+        }
+    }
+
+    public class TriggeredBuildableTreeNode : BuildableTreeNode
+    {
+        public TriggeredBuildableTreeNode(string name, INode? parent, IEvent @event,
+            Action<object?>? customizedBuildAction = null) : 
+            base(name, parent, @event, customizedBuildAction)
+        {
+            _buildAction = (object? o) =>
+            {
+                RuntimeCore.EventManager?.RegistEvent(@event);
+                _customizedBuildAction?.Invoke(o);
+                var listener = new Listener(Guid.NewGuid().ToString(), 
+                (ulong time, MessageCapsule capsule) =>
+                {
+                    
+                });
+            };
+        }
+
+        public override void Build(object? o)
+        {
             base.Build(o);
         }
     }

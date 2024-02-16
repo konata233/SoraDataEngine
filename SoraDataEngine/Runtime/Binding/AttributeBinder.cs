@@ -1,5 +1,6 @@
 ﻿using SoraDataEngine.Commons.Attributes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace SoraDataEngine.Runtime.Binding
     /// </summary>
     public class AttributeBinder
     {
+        private Dictionary<string, int> _bindedCallbacks = new Dictionary<string, int>();
         /// <summary>
         /// 实例
         /// </summary>
@@ -25,6 +27,11 @@ namespace SoraDataEngine.Runtime.Binding
             Instance = RuntimeCore.AttributeBinder;
         }
 
+        public int GetRegistedCallbackCount(string attributeName)
+        {
+            return _bindedCallbacks[attributeName];
+        }
+
         /// <summary>
         /// 添加一个事件绑定
         /// </summary>
@@ -33,6 +40,12 @@ namespace SoraDataEngine.Runtime.Binding
         public void Bind(Action<object?, object?> callback, IAttribute target) 
         {
             target.OnValueChanged += callback;
+            if (_bindedCallbacks.ContainsKey(target.Name))
+            {
+                _bindedCallbacks[target.Name] = _bindedCallbacks[target.Name] + 1;
+            }
+            else
+                _bindedCallbacks.Add(target.Name, 1);
         }
     }
 }
